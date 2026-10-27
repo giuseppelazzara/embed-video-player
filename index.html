@@ -12,16 +12,13 @@
 </head>
 <body>
 <script>
-  // Reads ?v=VIDEO_ID&s=START&e=END and embeds the clip.
+  // Uso: ?v=VIDEO_ID&start=..&end=..&altri_parametri_youtube
   var p = new URLSearchParams(location.search);
-  var start = parseInt(p.get('s'), 10) || 0;
-  var end = parseInt(p.get('e'), 10) || 0;
-  var src = 'https://www.youtube.com/embed/' + encodeURIComponent(p.get('v') || '')
-          + '?start=' + start
-          + (end > 0 ? '&end=' + end : '')
-          + '&autoplay=1&rel=0';
+  var id = p.get('v') || '';
+  p.delete('v');
+  if (!parseInt(p.get('end'), 10)) p.delete('end');   // end=0 o vuoto = fino alla fine
   var f = document.createElement('iframe');
-  f.src = src;
+  f.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?' + p.toString();
   f.allow = 'autoplay; encrypted-media; fullscreen';
   f.allowFullscreen = true;
   f.referrerPolicy = 'strict-origin-when-cross-origin';
